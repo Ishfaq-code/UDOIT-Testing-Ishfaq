@@ -291,6 +291,15 @@ useEffect(() => {
 
 
 const updateActiveIssueHtml = () => {
+    let issue = activeIssue
+    issue.isModified = true
+
+    if (markAsReviewed) {
+      issue.newHtml = issue.initialHtml
+      handleActiveIssue(issue)
+      return
+    }
+
     const html = Html.getIssueHtml(activeIssue)
     let element = Html.toElement(html)
 
@@ -307,9 +316,7 @@ const updateActiveIssueHtml = () => {
         }
     }
 
-    let issue = activeIssue
-    issue.newHtml = Html.toString(element)
-
+    issue.newHtml = Html.toElement(element)
     handleActiveIssue(issue)
 }
 
