@@ -7,6 +7,7 @@ import EmbeddedContentTitleForm from '../Components/Forms/EmbeddedContentTitleFo
 import EmphasisForm from '../Components/Forms/EmphasisForm'
 import HeadingEmptyForm from '../Components/Forms/HeadingEmptyForm'
 import HeadingStyleForm from '../Components/Forms/HeadingStyleForm'
+import InvalidAttributeForm from '../Components/Forms/InvalidAttributeForm'
 import LabelForm from '../Components/Forms/LabelForm'
 import LinkForm from '../Components/Forms/LinkForm'
 import ListForm from '../Components/Forms/ListForm'
@@ -28,6 +29,7 @@ export const formNames = {
   EMPHASIS: 'emphasis',
   HEADING_EMPTY: 'heading_empty',
   HEADING_STYLE: 'heading_style',
+  INVALID_ATTRIBUTE: 'invalid_attribute',
   LABEL: 'label',
   LABEL_UNIQUE: 'label_unique',
   LINK: 'link',
@@ -58,6 +60,7 @@ const formTypes = {
   [formNames.EMPHASIS]: EmphasisForm,
   [formNames.HEADING_EMPTY]: HeadingEmptyForm,
   [formNames.HEADING_STYLE]: HeadingStyleForm,
+  [formNames.INVALID_ATTRIBUTE]: InvalidAttributeForm,
   [formNames.LABEL]: LabelForm,
   [formNames.LABEL_UNIQUE]: LabelForm,
   [formNames.LINK]: LinkForm,
@@ -126,6 +129,9 @@ const rulesToFormNameMap = {
 
   heading_markup_misuse: formNames.HEADING_STYLE,
   text_block_heading: formNames.HEADING_STYLE,
+
+  table_aria_descendants:formNames.INVALID_ATTRIBUTE,
+  table_scope_valid: formNames.INVALID_ATTRIBUTE,
 
   aria_accessiblename_exists: formNames.LABEL,
   aria_application_labelled: formNames.LABEL,
