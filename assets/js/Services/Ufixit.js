@@ -132,6 +132,11 @@ const rulesToFormNameMap = {
 
   table_aria_descendants:formNames.INVALID_ATTRIBUTE,
   table_scope_valid: formNames.INVALID_ATTRIBUTE,
+  input_haspopup_conflict: formNames.INVALID_ATTRIBUTE,
+  aria_attribute_redundant: formNames.INVALID_ATTRIBUTE,
+  input_autocomplete_valid: formNames.INVALID_ATTRIBUTE,
+  combobox_haspopup_valid: formNames.INVALID_ATTRIBUTE,
+  combobox_autocomplete_valid: formNames.INVALID_ATTRIBUTE,
 
   aria_accessiblename_exists: formNames.LABEL,
   aria_application_labelled: formNames.LABEL,

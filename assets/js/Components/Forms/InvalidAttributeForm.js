@@ -19,8 +19,8 @@ const InvalidAttributeForm = ({
   const [isScopeValidError, setIsScopeValidError] = useState(false)
   const[selectedScope, setSelectedScope] = useState("")
   const [useScope, setUseScope] = useState(true)
-  const [removeRole, setRemoveRole] = useState(false) // What will be used to trigger role removal from tables
-  const [formErrors, setFormErrors] = useState([]) // Keeping track of all form errors in our inputs
+  const [removeRole, setRemoveRole] = useState(false) 
+  const [formErrors, setFormErrors] = useState([]) 
 
   const [removeAttr, setRemoveAttr] = useState(false)
 
@@ -31,6 +31,12 @@ const InvalidAttributeForm = ({
     if(!activeIssue){
         return
     }
+
+    if(activeIssue.scanRuleId != "table_aria_descendants" || activeIssue.scanRuleId != "table_scope_valid"){
+      console.log(activeIssue)
+      return;
+    }
+
 
     const rule = activeIssue.scanRuleId
     if(rule != "table_aria_descendants"){
