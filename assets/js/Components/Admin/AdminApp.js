@@ -6,6 +6,8 @@ import ReportsPage from "./ReportsPage";
 import MessageTray from "../Widgets/MessageTray";
 import AdminFilters from "../Admin/AdminFilters";
 import ProgressIcon from "../Icons/ProgressIcon";
+import SearchIcon from "../Icons/SearchIcon";
+import CloseIcon from "../Icons/CloseIcon";
 
 import { ISSUE_FILTER } from "../../Services/Settings";
 import "../../../css/udoit4-theme.css";
@@ -546,12 +548,25 @@ export default function AdminApp(initialData) {
               aria-label="Search for an account"
               disabled={loadingAccountSearch}
             />
-            <button type="submit" disabled={loadingAccountSearch || !accountSearch.trim()}>
-              Search
+            <button
+              type="submit"
+              className="btn-secondary admin-account-search-button"
+              aria-label="Search accounts"
+              title="Search accounts"
+              disabled={loadingAccountSearch || !accountSearch.trim()}
+            >
+              <SearchIcon aria-hidden="true" className="icon-sm" />
             </button>
             {activeAccountSearch && (
-              <button type="button" onClick={clearAccountSearch} disabled={loadingAccountSearch}>
-                Clear
+              <button
+                type="button"
+                className="btn-secondary admin-account-search-button"
+                aria-label="Clear account search"
+                title="Clear account search"
+                onClick={clearAccountSearch}
+                disabled={loadingAccountSearch}
+              >
+                <CloseIcon aria-hidden="true" className="icon-sm" />
               </button>
             )}
           </form>

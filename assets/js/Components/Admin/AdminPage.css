@@ -30,10 +30,10 @@
     overflow-y: auto;
     padding: 2px 2px 2px 0;
   }
-
   .admin-account-search {
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
+    flex-wrap: nowrap;
     gap: .35rem;
     margin-bottom: .5rem;
   }
@@ -45,8 +45,12 @@
     padding: .5rem;
   }
 
-  .admin-account-search button {
-    padding: .4rem .65rem;
+  .admin-account-search-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    padding: .4rem;
   }
 
   .admin-account-tree-root {
