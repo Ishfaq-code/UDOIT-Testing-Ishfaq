@@ -31,12 +31,11 @@ export default function AdminApp(initialData) {
     courseId: null,
   };
 
-  const [messages, setMessages] = useState(initialData.messages || []);
+  const [nextMessage, setNextMessage] = useState(null);
   const [preferences, setPreferences] = useState(initialData.preferences ?? {});
   const [instanceInfo, setInstanceInfo] = useState(
     initialData.instanceInfo ?? {},
   );
-  const [termInfo, setTermInfo] = useState(initialData.termInfo || {});
   const [labels, setLabels] = useState(initialData.labels ?? []);
   const [parentAccounts, setParentAccounts] = useState({[accountId]: intialAccount})
   const [accounts, setAccounts] = useState({[accountId]: filteredAccounts});
@@ -53,6 +52,7 @@ export default function AdminApp(initialData) {
   const [accountSearch, setAccountSearch] = useState("")
   const [activeAccountSearch, setActiveAccountSearch] = useState("")
   const [loadingAccountSearch, setLoadingAccountSearch] = useState(false)
+
   const accountStateBeforeSearch = useRef(null)
   const accountSearchResults = useRef([])
   const [selectedTerm, setSelectedTerm] = useState(-1)
@@ -71,7 +71,7 @@ export default function AdminApp(initialData) {
     totalPages: 0,
   })
 
-  const stats = {
+  const [dashboardStats, setDashboardStats] = useState(initialData.stats || {
       loading: false,
       totalCourses: 0,
       scannedCourses: 0,
@@ -86,9 +86,7 @@ export default function AdminApp(initialData) {
       recentScans: 0,
       oldestScan: null,
       newestScan: null,
-    };
-
-  const [dashboardStats, setDashboardStats] = useState(initialData.stats || stats)
+  })
 
   useEffect(() => {
     retriveCoursesAndStats()
@@ -133,10 +131,12 @@ export default function AdminApp(initialData) {
 
   const retriveCoursesAndStats = async () => {
     if (!accountStack){
+      addMessage("No accounts were selected!", 'error')
       return
     }
     const data = await fetchCourses(accountStack[accountStack.length - 1].lmsAccountId, selectedTerm)
     if (!data) {
+      addMessage("Failed to retrieve courses and data!", 'error')
       return
     }
     
@@ -159,13 +159,14 @@ export default function AdminApp(initialData) {
       })
       const normalizedCourses = await retrivedCourses.json()
       if (!normalizedCourses){
-        console.log("Failed to fetch data.")
+        addMessage("Failed to fetch course data!", 'error')
+        return
       }
 
       return normalizedCourses.data
     }
     catch(e){
-      console.error(e)
+      addMessage("Failed to fetch course data!", 'error')
     } finally {
       setLoadingCourses(false)
     }
@@ -176,6 +177,7 @@ export default function AdminApp(initialData) {
     const data = await api.getAdminReportsIssues(accountStack[accountStack.length - 1].lmsAccountId, selectedTerm)
     const reportsIssues = await data.json()
     if (!reportsIssues) {
+      addMessage("Failed to fetch reports & issues!", 'error')
       return
     }
     return reportsIssues.data
@@ -224,12 +226,8 @@ export default function AdminApp(initialData) {
     setNavigation("reports");
   };
 
-  const addMessage = (msg) => {
-    setMessages((prevMessages) => [...prevMessages, msg]);
-  };
-
-  const clearMessages = () => {
-    setMessages([]);
+  const addMessage = (msg, severity = 'success') => {
+    setNextMessage({message: msg});
   };
 
   const handleFilter = (newFilter) => {
@@ -580,7 +578,7 @@ export default function AdminApp(initialData) {
             t={t}
             preferences={preferences}
             accounts={accounts}
-            termInfo={termInfo}
+            termInfo={initialData.termInfo ?? []}
             filters={filters}
             handleFilter={handleFilter}
             loadingContent={loadingCourses}
@@ -645,9 +643,9 @@ export default function AdminApp(initialData) {
       </div>
       <MessageTray
         t={t}
-        messages={messages}
-        clearMessages={clearMessages}
-        hasNewReport={true}
+        preferences={preferences}
+        initialMessages={initialData.messages || []}
+        nextMessage={nextMessage}
       />
     </div>
   );
