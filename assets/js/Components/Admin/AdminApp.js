@@ -8,15 +8,15 @@ import AdminFilters from "../Admin/AdminFilters";
 import ProgressIcon from "../Icons/ProgressIcon";
 import SearchIcon from "../Icons/SearchIcon";
 import CloseIcon from "../Icons/CloseIcon";
-
-import { ISSUE_FILTER } from "../../Services/Settings";
 import "../../../css/udoit4-theme.css";
 import "./AdminPage.css";
 import { api } from "../../Services/Api";
 
 export default function AdminApp(initialData) {
-  // If there are multiple accounts available, the first account is the selected accountId
-  let accountId = initialData?.accountId;
+  const PREFERENCES = initialData.preferences ?? {}
+  const LABELS = initialData.labels ?? []
+  const accountId = initialData?.accountId;
+
   let intialAccount = {}
   let filteredAccounts = []
   if (initialData.accounts) {
@@ -24,25 +24,12 @@ export default function AdminApp(initialData) {
     filteredAccounts = initialData.accounts.filter(a => a.lmsAccountId != accountId)
   }
 
-  let initialFilters = {
-    accountId: accountId,
-    termId: initialData.termInfo.defaultTerm,
-    includeSubaccounts: true,
-    courseId: null,
-  };
-
   const [nextMessage, setNextMessage] = useState(null);
-  const [preferences, setPreferences] = useState(initialData.preferences ?? {});
-  const [instanceInfo, setInstanceInfo] = useState(
-    initialData.instanceInfo ?? {},
-  );
-  const [labels, setLabels] = useState(initialData.labels ?? []);
-  const [parentAccounts, setParentAccounts] = useState({[accountId]: intialAccount})
-  const [accounts, setAccounts] = useState({[accountId]: filteredAccounts});
+  const [parentAccounts, setParentAccounts] = useState({})
+  const [accounts, setAccounts] = useState({});
 
   const [courses, setCourses] = useState({});
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [filters, setFilters] = useState({ ...initialFilters });
   const [searchTerm, setSearchTerm] = useState("");
   const [navigation, setNavigation] = useState("dashboard");
   const [loadingCourses, setLoadingCourses] = useState(true);
@@ -94,7 +81,7 @@ export default function AdminApp(initialData) {
 
   const t = useCallback(
     (key, values = {}) => {
-      let translatedText = labels[key] ? labels[key] : key;
+      let translatedText = LABELS[key] ? LABELS[key] : key;
       if (values && Object.keys(values).length > 0) {
         Object.keys(values).forEach((valKey) => {
           translatedText = translatedText.replace(
@@ -105,7 +92,7 @@ export default function AdminApp(initialData) {
       }
       return translatedText;
     },
-    [labels],
+    [LABELS],
   );
 
   const updateAccountStack = (account, shouldPush = false) => {
@@ -228,11 +215,6 @@ export default function AdminApp(initialData) {
 
   const addMessage = (msg, severity = 'success') => {
     setNextMessage({message: msg});
-  };
-
-  const handleFilter = (newFilter) => {
-    const tempFilters = Object.assign({}, filters, newFilter);
-    setFilters(tempFilters);
   };
 
   const removeAccountBranch = (
@@ -527,7 +509,7 @@ export default function AdminApp(initialData) {
   return (
     <div
       id="app-container"
-      className={`flex-column flex-grow-1 ${preferences.fontSize || "font-medium"} ${preferences.fontFamily || "sans-serif"} ${preferences.darkMode ? "dark-mode" : ""}`}
+      className={`flex-column flex-grow-1 ${PREFERENCES.fontSize || "font-medium"} ${PREFERENCES.fontFamily || "sans-serif"} ${PREFERENCES.darkMode ? "dark-mode" : ""}`}
     >
       <AdminHeader
         t={t}
@@ -576,19 +558,12 @@ export default function AdminApp(initialData) {
         <main role="main" className="admin-main pt-2">
           <AdminFilters 
             t={t}
-            preferences={preferences}
-            accounts={accounts}
             termInfo={initialData.termInfo ?? []}
-            filters={filters}
-            handleFilter={handleFilter}
-            loadingContent={loadingCourses}
             searchTerm={searchTerm}
             handleSearchTerm={handleCourseSearchTerm}
             navigation={navigation}
-            parentAccounts={parentAccounts}
             accountStack={accountStack}
             handleAccountSelect={handleAccountSelect}
-            selectedTerm={selectedTerm}
             setSelectedTerm={handleSelectedTerm}
             />
           {loadingCourses && (
@@ -607,33 +582,24 @@ export default function AdminApp(initialData) {
               {"dashboard" === navigation && (
                 <AdminDashboard
                   t={t}
-                  preferences={preferences}
                   dashboardStats={dashboardStats}
-                  handleNavigation={handleNavigation}
                   handleReportClick={handleReportClick}
-                  addMessage={addMessage}
                 />
               )}
               {"courses" === navigation && (
                 <CoursesPage
                   t={t}
                   courses={courses}
-                  instanceInfo={instanceInfo}
-                  searchTerm={searchTerm}
                   tableSettings={courseTableSettings}
                   handleTableSettings={handleCourseTableSettings}
                   pagination={coursePagination}
-                  addMessage={addMessage}
                   handleReportClick={handleReportClick}
-                  handleNavigation={handleNavigation}
                   fetchReportsIssues={fetchReportsIssues}
                 />
               )}
               {"reports" === navigation && (
                 <ReportsPage
                   t={t}
-                  instanceInfo={instanceInfo}
-                  filters={filters}
                   selectedCourse={selectedCourse}
                 />
               )}
@@ -643,7 +609,7 @@ export default function AdminApp(initialData) {
       </div>
       <MessageTray
         t={t}
-        preferences={preferences}
+        preferences={PREFERENCES}
         initialMessages={initialData.messages || []}
         nextMessage={nextMessage}
       />

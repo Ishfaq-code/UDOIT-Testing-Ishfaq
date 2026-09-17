@@ -9,19 +9,12 @@ const SEARCH_DEBOUNCE_MS = 500;
 
 export default function AdminFilters({
   t,
-  preferences,
-  accounts,
   termInfo,
-  filters,
-  handleFilter,
-  loadingContent,
   searchTerm,
   handleSearchTerm,
   navigation,
-  parentAccounts,
   accountStack,
   handleAccountSelect,
-  selectedTerm,
   setSelectedTerm
 }) {
 

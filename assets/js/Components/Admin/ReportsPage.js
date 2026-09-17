@@ -11,8 +11,6 @@ import { ISSUE_FILTER } from "../../Services/Constants";
 
 export default function ReportsPage({
   t,
-  instanceInfo,
-  filters,
   selectedCourse,
 }) {
   const [groupedReports, setGroupedReports] = useState(null);
