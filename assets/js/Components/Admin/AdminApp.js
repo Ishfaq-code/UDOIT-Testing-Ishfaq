@@ -15,18 +15,18 @@ import { api } from "../../Services/Api";
 export default function AdminApp(initialData) {
   const PREFERENCES = initialData.preferences ?? {}
   const LABELS = initialData.labels ?? []
-  const accountId = initialData?.accountId;
+  const ACCOUNT_ID = initialData?.accountId;
 
   let intialAccount = {}
   let filteredAccounts = []
   if (initialData.accounts) {
-    intialAccount = initialData.accounts.find(a => a.lmsAccountId == accountId)
-    filteredAccounts = initialData.accounts.filter(a => a.lmsAccountId != accountId)
+    intialAccount = initialData.accounts.find(a => a.lmsAccountId == ACCOUNT_ID)
+    filteredAccounts = initialData.accounts.filter(a => a.lmsAccountId != ACCOUNT_ID)
   }
 
   const [nextMessage, setNextMessage] = useState(null);
-  const [parentAccounts, setParentAccounts] = useState({})
-  const [accounts, setAccounts] = useState({});
+  const [parentAccounts, setParentAccounts] = useState({[ACCOUNT_ID]: intialAccount})
+  const [accounts, setAccounts] = useState({[ACCOUNT_ID]: filteredAccounts});
 
   const [courses, setCourses] = useState({});
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -314,7 +314,7 @@ export default function AdminApp(initialData) {
     nextVisitedAccountIds.add(account.lmsAccountId);
 
     const childAccounts = (isRoot
-      ? accounts[accountId] || []
+      ? accounts[ACCOUNT_ID] || []
       : accounts[account.lmsAccountId] || []
     ).filter(
       (childAccount) =>
@@ -368,7 +368,7 @@ export default function AdminApp(initialData) {
   const accountTreeFromResults = (accountResults) => {
     const resultAccounts = {}
     const resultParents = {}
-    const rootAccount = accountResults.find((account) => String(account.lmsAccountId) === String(accountId))
+    const rootAccount = accountResults.find((account) => String(account.lmsAccountId) === String(ACCOUNT_ID))
 
     accountResults.forEach((account) => {
       const parentId = String(account.parentAccountId)
@@ -376,7 +376,7 @@ export default function AdminApp(initialData) {
     })
 
     if (rootAccount) {
-      resultParents[accountId] = rootAccount
+      resultParents[ACCOUNT_ID] = rootAccount
     }
 
     return { accounts: resultAccounts, parentAccounts: resultParents }
@@ -405,7 +405,7 @@ export default function AdminApp(initialData) {
 
     setLoadingAccountSearch(true)
     try {
-      const response = await api.getAdminSubAccounts(accountId, search)
+      const response = await api.getAdminSubAccounts(ACCOUNT_ID, search)
       const payload = await response.json()
 
       if (!response.ok || payload?.errors?.length) {
@@ -458,14 +458,14 @@ export default function AdminApp(initialData) {
       path.unshift(currentAccount)
       visitedAccountIds.add(currentAccountId)
 
-      if (currentAccountId === String(accountId)) {
+      if (currentAccountId === String(ACCOUNT_ID)) {
         break
       }
 
       currentAccount = resultAccounts.get(String(currentAccount.parentAccountId))
     }
 
-    if (!previousState || path.length === 0 || String(path[0].lmsAccountId) !== String(accountId)) {
+    if (!previousState || path.length === 0 || String(path[0].lmsAccountId) !== String(ACCOUNT_ID)) {
       clearAccountSearch()
       return
     }
@@ -473,10 +473,10 @@ export default function AdminApp(initialData) {
     setLoadingAccountSearch(true)
     try {
       const nextAccounts = {
-        [accountId]: previousState.accounts[accountId] || [],
+        [ACCOUNT_ID]: previousState.accounts[ACCOUNT_ID] || [],
       }
       const nextParentAccounts = {
-        [accountId]: path[0],
+        [ACCOUNT_ID]: path[0],
       }
       const nextSelectedAccountsByDepth = {}
 
@@ -551,7 +551,7 @@ export default function AdminApp(initialData) {
             )}
           </form>
           <div className="admin-account-tree">
-            {parentAccounts[accountId] && renderAccountTree(parentAccounts[accountId], 0, true)}
+            {parentAccounts[ACCOUNT_ID] && renderAccountTree(parentAccounts[ACCOUNT_ID], 0, true)}
           </div>
         </aside>
 
