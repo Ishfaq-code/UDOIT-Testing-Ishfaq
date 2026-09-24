@@ -916,8 +916,8 @@
   .navigation-breadcrumb {
     font-size: calc(.8 * var(--font-size));
     font-weight: 400;
-    margin-inline-start: calc(0.5 * var(--spacer)) !important;
-    margin-inline-end: calc(0.5 * var(--spacer)) !important;
+    margin-inline-start: calc(0.5 * var(--spacer));
+    margin-inline-end: calc(0.5 * var(--spacer));
 
     &.linked{
       &:hover{
