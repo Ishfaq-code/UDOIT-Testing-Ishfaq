@@ -116,6 +116,18 @@ export default function AdminApp(initialData) {
     })
   }
 
+  const handleRootAccountSelect = () => {
+    resetCoursePage()
+    setAccounts({ [ACCOUNT_ID]: filteredAccounts })
+    setParentAccounts({ [ACCOUNT_ID]: intialAccount })
+    setSelectedAccountsByDepth({})
+    setAccountStack([intialAccount])
+    setAccountSearch("")
+    setActiveAccountSearch("")
+    accountSearchResults.current = []
+    accountStateBeforeSearch.current = null
+  }
+
   const retriveCoursesAndStats = async () => {
     if (!accountStack){
       addMessage("No accounts were selected!", 'error')
@@ -328,19 +340,19 @@ export default function AdminApp(initialData) {
       <div className="admin-account-tree-branch" key={account.lmsAccountId}>
         <div
           className={isRoot ? "admin-account-tree-root" : `admin-account-tree-item ${isSelected ? "selected" : ""}`}
-          role={isRoot ? undefined : "button"}
+          role="button"
           style={{ "--account-depth": depth }}
-          tabIndex={isRoot ? undefined : "0"}
-          onClick={isRoot ? undefined : () => handleAccountSelect(account, depth)}
-          onKeyDown={
-            isRoot
-              ? undefined
-              : (e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    handleAccountSelect(account, depth);
-                  }
-                }
-          }
+          tabIndex="0"
+          onClick={isRoot ? handleRootAccountSelect : () => handleAccountSelect(account, depth)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              if (isRoot) {
+                handleRootAccountSelect()
+              } else {
+                handleAccountSelect(account, depth)
+              }
+            }
+          }}
         >
           {account.accountName}
         </div>

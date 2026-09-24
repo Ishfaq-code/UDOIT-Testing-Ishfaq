@@ -54,12 +54,19 @@
   }
 
   .admin-account-tree-root {
+    cursor: pointer;
     color: var(--text-color);
     font-weight: 600;
     line-height: 1.3rem;
     overflow-wrap: anywhere;
     padding: .35rem .5rem .35rem calc(.5rem + (var(--account-depth) * 1rem));
     white-space: normal;
+  }
+
+  .admin-account-tree-root:hover,
+  .admin-account-tree-root:focus {
+    background-color: var(--primary-color-light);
+    outline: none;
   }
 
   .admin-account-tree-item {
