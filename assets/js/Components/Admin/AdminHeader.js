@@ -13,8 +13,8 @@ export default function AdminHeader({
 
 
   const links = [
-    {name: t('Dashboard'), icon: HomeIcon, key: 'dashboard'},
-    {name: t('Courses'), icon: ContentAssignmentIcon, key: 'courses'}
+    {name: t('admin.nav.dashboard'), icon: HomeIcon, key: 'dashboard'},
+    {name: t('admin.nav.courses'), icon: ContentAssignmentIcon, key: 'courses'}
   ]
 
 

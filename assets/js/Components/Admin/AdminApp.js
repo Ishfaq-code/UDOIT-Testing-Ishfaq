@@ -130,12 +130,12 @@ export default function AdminApp(initialData) {
 
   const retriveCoursesAndStats = async () => {
     if (!accountStack){
-      addMessage("No accounts were selected!", 'error')
+      addMessage(t("admin.msg.no_accounts_selected"), 'error')
       return
     }
     const data = await fetchCourses(accountStack[accountStack.length - 1].lmsAccountId, selectedTerm)
     if (!data) {
-      addMessage("Failed to retrieve courses and data!", 'error')
+      addMessage(t("admin.msg.failed_retrieve_data"), 'error')
       return
     }
     
@@ -158,14 +158,14 @@ export default function AdminApp(initialData) {
       })
       const normalizedCourses = await retrivedCourses.json()
       if (!normalizedCourses){
-        addMessage("Failed to fetch course data!", 'error')
+        addMessage(t("admin.msg.failed_fetch_courses"), 'error')
         return
       }
 
       return normalizedCourses.data
     }
     catch(e){
-      addMessage("Failed to fetch course data!", 'error')
+      addMessage(t("admin.msg.failed_fetch_courses"), 'error')
     } finally {
       setLoadingCourses(false)
     }
@@ -176,7 +176,7 @@ export default function AdminApp(initialData) {
     const data = await api.getAdminReportsIssues(accountStack[accountStack.length - 1].lmsAccountId, selectedTerm)
     const reportsIssues = await data.json()
     if (!reportsIssues) {
-      addMessage("Failed to fetch reports & issues!", 'error')
+      addMessage(t("admin.msg.failed_fetch_reports"), 'error')
       return
     }
     return reportsIssues.data
@@ -536,15 +536,15 @@ export default function AdminApp(initialData) {
               type="text"
               value={accountSearch}
               onChange={handleAccountSearch}
-              placeholder="Search for an account"
-              aria-label="Search for an account"
+              placeholder={t("admin.search.account_placeholder")}
+              aria-label={t("admin.search.account_placeholder")}
               disabled={loadingAccountSearch}
             />
             <button
               type="submit"
               className="btn-secondary admin-account-search-button"
-              aria-label="Search accounts"
-              title="Search accounts"
+              aria-label={t("admin.search.accounts")}
+              title={t("admin.search.accounts")}
               disabled={loadingAccountSearch || !accountSearch.trim()}
             >
               <SearchIcon aria-hidden="true" className="icon-sm" />
@@ -553,8 +553,8 @@ export default function AdminApp(initialData) {
               <button
                 type="button"
                 className="btn-secondary admin-account-search-button"
-                aria-label="Clear account search"
-                title="Clear account search"
+                aria-label={t("admin.search.clear")}
+                title={t("admin.search.clear")}
                 onClick={clearAccountSearch}
                 disabled={loadingAccountSearch}
               >

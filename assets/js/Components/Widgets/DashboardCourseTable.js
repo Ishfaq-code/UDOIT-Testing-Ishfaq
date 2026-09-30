@@ -12,10 +12,10 @@ const DashboardCourseTable = ({t, courses, handleReportClick}) => {
       })
     
     const headers = [
-        { id: "title", text: "Course Name" },
-        { id: "totalActiveIssues", text: "Barriers"},
-        { id: "scanRule", text: "Most Recurring Barrier"},
-        {id: "lastUpdated", text: "Last Updated"}
+        { id: "title", text: t("report.header.course_name") },
+        { id: "totalActiveIssues", text: t("report.header.issues")},
+        { id: "scanRule", text: t("admin.dashboard.header.recurring_barrier")},
+        {id: "lastUpdated", text: t("admin.dashboard.header.last_updated")}
     ]
 
   
@@ -74,7 +74,7 @@ const DashboardCourseTable = ({t, courses, handleReportClick}) => {
     return (
         <>
               <SortableTable
-                caption={"Courses With Most Accessibility Barriers"}
+                caption={t("admin.dashboard.course_barriers_caption")}
                 headers={headers}
                 rows={rows}
                 tableSettings={tableSettings}

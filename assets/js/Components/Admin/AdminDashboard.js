@@ -31,7 +31,7 @@ export default function AdminDashboard({ t, dashboardStats, handleReportClick })
 
 
   if (dashboardStats.loading) {
-    return <div className="p-3">Loading dashboard...</div>;
+    return <div className="p-3">{t("admin.status.loading_dashboard")}</div>;
   }
 
   const scanPercentage =
@@ -48,19 +48,19 @@ export default function AdminDashboard({ t, dashboardStats, handleReportClick })
 
   const barrierProgressBars = [
     {
-      label: "Issues Resolved",
+      label: t("admin.dashboard.issues_resolved"),
       value: dashboardStats.issueFixCount,
       total: (dashboardStats.issueCount || 0) + (dashboardStats.issueFixCount || 0),
       type: "issue",
     },
     {
-      label: "Potential Issues Resolved",
+      label: t("admin.dashboard.potential_issues_resolved"),
       value: dashboardStats.potentialIssueFixCount,
       total: (dashboardStats.potentialIssueCount || 0) + (dashboardStats.potentialIssueFixCount || 0),
       type: "potential",
     },
     {
-      label: "Files Reviewed",
+      label: t("admin.dashboard.files_reviewed"),
       value: dashboardStats.fileReviewCount,
       total: (dashboardStats.fileCount || 0) + (dashboardStats.fileReviewCount || 0),
       type: "file",
@@ -71,17 +71,17 @@ export default function AdminDashboard({ t, dashboardStats, handleReportClick })
     <div className="scrollable p-2 m-2">
       <div className="admin-dashboard-stats-grid mt-3">
           <ProgressCircleCard
-            title="Courses using UDOIT"
+            title={t("admin.dashboard.courses_using_udoit")}
             percent={scanPercentage}
-            caption={`${dashboardStats.scannedCourses} of ${dashboardStats.totalCourses} courses`}
+            caption={t("admin.dashboard.courses_caption", {scanned: dashboardStats.scannedCourses, total: dashboardStats.totalCourses})}
             className="admin-dashboard-stat-card"/>
           <ProgressCircleCard
-            title="Instructor adoption of UDOIT"
+            title={t("admin.dashboard.instructor_adoption")}
             percent={instructorAdoption}
-            caption={`${dashboardStats.uniqueInstructorsUsingUdoit} of ${dashboardStats.totalInstructors} instructors`}
+            caption={t("admin.dashboard.instructors_caption", {adopted: dashboardStats.uniqueInstructorsUsingUdoit, total: dashboardStats.totalInstructors})}
             className="admin-dashboard-stat-card"/>
           <ProgressBarsCard
-            title="Barrier Progress"
+            title={t("admin.dashboard.barrier_progress")}
             bars={barrierProgressBars}
             className="admin-dashboard-stat-card"/>
         </div>

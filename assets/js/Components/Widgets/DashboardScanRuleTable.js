@@ -11,10 +11,10 @@ const DashboardScanRuleTable = ({ t, scanRuleRanked }) => {
     })
 
     const headers = [
-        { id: "rank", text: "Rank" },
-        { id: "rawRule", text: "Equal Access Scanner Rule" },
-        { id: "normalizedRule", text: "Normalized Rule" },
-        { id: "count", text: "Number of Courses" }
+        { id: "rank", text: t("admin.dashboard.header.rank") },
+        { id: "rawRule", text: t("admin.dashboard.header.scanner_rule") },
+        { id: "normalizedRule", text: t("admin.dashboard.header.normalized_rule") },
+        { id: "count", text: t("admin.dashboard.header.course_count") }
     ]
 
     const sortContent = () => {
@@ -56,7 +56,7 @@ const DashboardScanRuleTable = ({ t, scanRuleRanked }) => {
     return (
         <>
             <SortableTable
-                caption={"Most Frequent Scan Rules by Courses"}
+                caption={t("admin.dashboard.scan_rules_caption")}
                 headers={headers}
                 rows={rows}
                 tableSettings={tableSettings}
