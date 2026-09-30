@@ -3,6 +3,7 @@ import DashboardCourseTable from "../Widgets/DashboardCourseTable";
 import ProgressCircleCard from "../Widgets/ProgressCircleCard";
 import ProgressBarsCard from "../Widgets/ProgressBarsCard";
 import DashboardScanRuleTable from "../Widgets/DashboardScanRuleTable";
+import InfoPopover from "../Widgets/InfoPopover";
 import { formNameFromRule } from "../../Services/Ufixit";
 
 
@@ -14,9 +15,22 @@ export default function AdminDashboard({ t, dashboardStats, handleReportClick })
       const tempRanked = []
       for(const rule in dashboardStats.scanRanked){
         if(rule){ 
+          const formName = formNameFromRule(rule);
+          const label = formName === "review_only"
+            ? t("report.label.unhandled") + rule
+            : t(`form.${formName}.title`);
+
           tempRanked.push({
-            rawRule: rule,
-            normalizedRule: t(`form.${formNameFromRule(rule)}.title`),
+            normalizedRule: (
+              <span className="issue-label">
+                {label}
+                <InfoPopover
+                  t={t}
+                  content={t(`form.${formName}.summary`)}
+                />
+              </span>
+            ),
+            normalizedRule_display: label,
             count: dashboardStats.scanRanked[rule]
           })
         }
@@ -27,7 +41,7 @@ export default function AdminDashboard({ t, dashboardStats, handleReportClick })
       }
       setScanRuleRanked(sorted)
     }
-  }, [dashboardStats])
+  }, [dashboardStats, t])
 
 
   if (dashboardStats.loading) {

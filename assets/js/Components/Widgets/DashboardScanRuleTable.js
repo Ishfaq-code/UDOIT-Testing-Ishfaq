@@ -12,7 +12,6 @@ const DashboardScanRuleTable = ({ t, scanRuleRanked }) => {
 
     const headers = [
         { id: "rank", text: t("admin.dashboard.header.rank") },
-        { id: "rawRule", text: t("admin.dashboard.header.scanner_rule") },
         { id: "normalizedRule", text: t("admin.dashboard.header.normalized_rule") },
         { id: "count", text: t("admin.dashboard.header.course_count") }
     ]
