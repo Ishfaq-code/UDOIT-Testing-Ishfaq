@@ -20,13 +20,13 @@ export default function CoursePage({
       text: t("report.header.course_name"),
       alignText: "center",
     },
-    { id: "instructors", text: t("admin.dashboard.header.instructors"), alignText: "center", sortable: false },
+    { id: "instructors", text: t("admin.dashboard.header.instructors"), alignText: "center" },
     {
       id: "lastUpdated",
       text: t("report.header.last_scanned"),
       alignText: "center",
     },
-    { id: "barriers", text: t("report.header.issues"), alignText: "center", sortable: false },
+    { id: "barriers", text: t("report.header.issues"), alignText: "center" },
     {
       id: "potentialBarriers",
       text: t("report.header.potential"),
