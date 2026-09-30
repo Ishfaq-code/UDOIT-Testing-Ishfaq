@@ -34,7 +34,9 @@ const DashboardCourseTable = ({t, courses, handleReportClick}) => {
              {course.title}
            </a>
          ),
-         scanRule: t(`form.${formNameFromRule(course.scanRule)}.title`),
+          scanRule: course.scanRule
+            ? t(`form.${formNameFromRule(course.scanRule)}.title`)
+            : formNameFromRule(course.scanRule),
          lastUpdated: (new Date(course.lastUpdated)).toDateString(),
        })) : []
 
