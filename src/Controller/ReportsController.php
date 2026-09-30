@@ -115,12 +115,21 @@ class ReportsController extends ApiController
             }
 
             $data = json_decode($request->getContent(), true);
-            if (isset($data['ignoredIssues'])) {
-                $issueIds = [];
-                foreach ($data['ignoredIssues'] as $issue) {
-                    $issueIds[] = $issue;
+            $reportFields = [
+                'issues' => 'setIssues',
+                'potentialIssues' => 'setPotentialIssues',
+                'unreviewedFiles' => 'setUnreviewedFiles',
+                'reviewedFiles' => 'setReviewedFiles',
+            ];
+
+            foreach ($reportFields as $field => $setter) {
+                if (isset($data[$field])) {
+                    $report->{$setter}((int) $data[$field]);
                 }
-                $this->deleteIssuesById($issueIds);
+            }
+
+            if (isset($data['ignoredIssues'])) {
+                $this->deleteIssuesById(array_map('intval', $data['ignoredIssues']));
             }
 
             $this->doctrine->getManager()->flush();

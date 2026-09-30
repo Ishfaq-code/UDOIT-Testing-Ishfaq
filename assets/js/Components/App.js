@@ -161,7 +161,11 @@ export default function App(initialData) {
 
     api
       .setReportData(tempReport.id, {
-        ignoredIssues: tempReport.ignoredIssues,
+        issues: tempReport.scanCounts.errors,
+        potentialIssues: tempReport.scanCounts.potentials,
+        unreviewedFiles: tempReport.scanCounts.files,
+        reviewedFiles: tempReport.reviewedFiles,
+        ignoredIssues: tempReport.ignoredIssues.map((issue) => issue.id),
       })
       .then((response) => response.json())
       .then((data) => {
